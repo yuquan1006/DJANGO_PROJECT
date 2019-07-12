@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <title>发布会管理系统</title>
+</head>
+<body>
+    <center>
+        <form method="post" action="/login_action/" >
+            <h2>发布会管理</h2>
+
+                <input type="text" name="username"  placeholder="手机号">
+            </br>
+            </br>
+                 <input type="text" name="password"  placeholder="登录密码">
+            </br><br>
+                {{ error }}
+                <input type="submit" name="submit_login"  value="登录">
+            <a href="/register/" name="register">注册</a>>
+           {% csrf_token %}
+        </form>
+    </center>
+</body>
+</html>

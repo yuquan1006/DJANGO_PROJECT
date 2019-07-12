@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <title>注册</title>
+</head>
+<body>
+   <div class="page-header" style="padding-top: 80px;">
+       <p>注册信息:</p>
+            <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form" method="post" action="/register_action/">
+                <div class="form-group">
+                    <input name="username" type="text" placeholder="输入用户名" class="form-control"><br>
+                    <input name="password" type="text" placeholder="输入密码" class="form-control"><br>
+                    <input name="email" type="text" placeholder="输入邮箱" class="form-control"><br>
+
+                </div>
+                    <font color="red">
+                    <br>{{ hint}}
+                    </font>
+                   <br> <button type="submit" class="btn btn-success">注册</button>
+                    {% csrf_token %}
+                </form>
+            </div>
+   </div>
+
+</body>
+</html>

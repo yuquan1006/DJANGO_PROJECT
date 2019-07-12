@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../interfaceFrameWork_moiiee/.idea/interfaceFrameWork_moiiee.iml" filepath="$PROJECT_DIR$/../interfaceFrameWork_moiiee/.idea/interfaceFrameWork_moiiee.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../local/.idea/local.iml" filepath="$PROJECT_DIR$/../local/.idea/local.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/old_01.iml" filepath="$PROJECT_DIR$/.idea/old_01.iml" />
+    </modules>
+  </component>
+</project>

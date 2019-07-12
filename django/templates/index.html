@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django_Main</title>
+</head>
+<body>
+        <H1>Django-首页</H1>
+        <H1 style="...">用户登录</H1>
+        <form action="/index/" method="post">
+            <input type="text" name="username"/>
+            <input type="text" name="passwd"/>
+            <input type="submit" value="登录"/>
+        </form>
+        <hr />
+        <h1 style="...">登录成功！</h1>
+        <table border="1">
+            <thead>
+                <th>用户名<th/>
+                <th>密码<th/>
+            </thead>
+            <tbody>
+            {% for line in data %}
+                <tr>
+                <td>{{ line.user }}</td>
+                <td>{{ line.pwd }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+</body>
+</html>

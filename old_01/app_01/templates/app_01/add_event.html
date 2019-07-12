@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <title>Event Manage</title>
+    <title>添加发布会</title>
+</head>
+<body>
+         <div class="page-header" style="padding-top: 80px;">
+            <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form" method="post" action="/add_event_action/">
+                <div class="form-group">
+                    <input name="id" type="text" placeholder="输入发布会id" class="form-control"><br>
+                    <input name="name" type="text" placeholder="输入发布会名称" class="form-control"><br>
+                    <input name="limit" type="text" placeholder="输入发布会人数" class="form-control"><br>
+                    <input name="address" type="text" placeholder="输入发布会地址" class="form-control"><br>
+                    <label for="">开始日期：</label>
+                        <div class="input-group date" id='date1'>
+                            <input type="text" class="form-control" name="start_time"/>
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </span>
+                        </div>
+                </div><br>
+                    <button type="submit" class="btn btn-success">添加</button>
+                    {% csrf_token %}
+                </form>
+            </div>
+         </div>
+</body>
+                {# 时间控件需要#}
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>   <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+ $('#date1').datetimepicker({format: 'YYYY-MM-DD hh:mm:ss',locale: moment.locale('zh-cn')});
+</script>
+</html>

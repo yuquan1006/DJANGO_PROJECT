@@ -1,0 +1,223 @@
+Django：
+    urls：url配置，根据url分配到不同views下方法来处理（controller）
+    views：处理用户发出的请求，从urls.py中对应过来, 通过渲染templates中的网页可以将显示内容，比如登陆后的用户名，用户请求的数据，输出到网页。（service）
+    templates： 模板，views.py 中的函数渲染templates中的Html模板，得到动态内容的网页，当然可以用缓存来提高速度。
+    models： 与数据库操作相关，存入或读取数据时用到这个，当然用不到数据库的时候 你可以不使用。
+    forms： 表单，用户在浏览器上输入数据提交，对数据的验证工作以及输入框的生成等工作，当然你也可以不使用。
+    admin: 后台，可以用很少量的代码就拥有一个强大的后台。
+    setting: Django 的设置，配置文件，比如 DEBUG 的开关，静态文件的位置等。
+
+Django基本命令：
+     新建一个 django project：
+         django-admin.py startproject project_name
+     新建app（要先进入项目目录下）     一般一个项目有多个app, 当然通用的app也可以在多个项目中使用。
+        python manage.py startapp app_name
+
+      创建数据库表要先进入项目目录下）：：
+        配置setting中数据库配置，执行python manage.py migrate
+     更改数据库表或字段 （要先进入项目目录下）：
+        1. 创建更改的文件 python manage.py makemigrations 2.python manage.py migrate 将生成的py文件应用到数据库
+      启动django（要先进入项目目录下）,host和port可不写或写其一
+          python manage.py runserver host:port/ python manage.py runserver port
+     清空数据库：
+        python manage.py flush 此命令会询问是 yes 还是 no, 选择 yes 会把数据全部清空掉，只留下空表。
+     创建超级管理员：
+        python manage.py createsuperuser
+      修改密码：
+        python manage.py changepassword username
+      导出，导入数据：
+        python manage.py dumpdata appname > appname.json
+        python manage.py loaddata appname.json
+     Django项目终端：
+         python manage.py shell
+     数据库命令行：
+        python manage.py dbshell    Django 会自动进入在settings.py中设置的数据库，如果是 MySQL 或 postgreSQL,会要求输入数据库用户密码。
+
+
+Django开发模式：
+MTV 开发模式
+    Model 代表数据存取层，
+    View 代表的是系统中选择显示什么和怎么显示的部分，
+    Controller 指的是系统中根据用户输入并视需要访问模型
+MVC 开发模式
+    M ，数据存取部分，由 Django 数据库层处理
+    V ，选择显示哪些数据要显示以及怎样显示的部分，由视图和模板处理。
+    C ，根据用户输入委派视图的部分，由 Django 框架根据 URLconf 设置，对给定 URL 调用适当的
+    Python 函数。
+MTV 开发模式（Django）
+    M 代表模型（Model），即数据存取层。 该层处理与数据相关的所有事务： 如何存取、如何验证有效
+    T 代表模板(Template)，即表现层。 该层处理与表现相关的决定： 如何在页面或其他类型文档中进行显
+    示。
+    V 代表视图（View），即业务逻辑层。 该层包含存取模型及调取恰当模板的相关逻辑。 你可以把它看
+    作模型与模板之间的桥梁。
+    C 由框架自行处理
+
+Django.http.response下常用类(处理views返回)
+    HttpResonse 不调用模板，直接返回数据
+    render（简写函数） 格式：render(request, template_name, context) context添加到模板上下文的一个字典，视图将在渲染模板之前调用它
+    HttpResponseRedirect 重定向，服务器端跳转.构造函数的第一个参数用来指定重定向的地址
+    JsonResponse 返回json数据，一般用于异步请求。参数为字典。JsonResponse的默认Content-Type为application/json
+
+
+
+Django 模板机制：
+    Django 查找模板的过程是在每个 app 的 templates 文件夹中找，重名文件处理：这就需要把每个app中的 templates 文件夹中再建一个app的名称，仅和该app相关的模板放在 app/templates/app/ 目录下面，
+
+Django模板标签：
+    {{  }}和 {% %} 变量相关的用{{ }}，逻辑相关的用{% %}  通俗来说就是{{xxx}}这个为变量。{% %} 为语法使用（标签）
+    添加 CSRF 令牌。在 from 表单中添加{% csrf_token %}。
+    {{ }} Django 的模板标签，用于定义显示变量  {{ error }} render返回字典的value(其中error是对应的key)
+        字典变量    {{d.key1}}  取到字典d中key为key1的值
+        列表变量    {{l.1}}     取到列表l中下标为1的值
+        对象变量    {{person.name}} 取到对象person的name属性的值
+
+    （1）if/else标签 只能判断True 和False
+        {% if %} 标签会考察一个变量，如果这个变量为真（即，变量存在，非空，不是布尔值假），系统会显示在 {% if %} 和 {% endif %} 之间的任何内容，例如：
+            {% if today_is_weekend %}
+                <p>Welcome to the weekend!</p>
+             {% else %}
+                    <p>Get back to work.</p>
+            {% endif %}
+             tip: {% if %} 标签接受 and ， or 或者 not 关键字来对多个变量做判断 ，或者对变量取反（ not )，但不允许在同一个标签中同时使用 and 和 or ，因为逻辑上可能模糊的。
+     (2) for
+          {% for event in events reversed %}  # 加入reversed标签，反向迭代
+                    <tr>
+                        <td>{{ event.id }}</td>
+                        <td>{{ event.name }}</td>
+                    </tr>
+          {% endfor %}
+          字典：
+              {% for key, value in data.items %}
+                    {{ key }}: {{ value }}
+               {% endfor %}
+          二元元祖：
+            {% for x, y in points %} # points中的每个元素为 (x,y)
+                <p>There is a point at {{ x }},{{ y }}</p>
+            {% endfor %}
+            for loop中定义的一些内建变量 
+                forloop.counter 当前的迭代器数目(从1开始) 
+                forloop.counter0 当前的迭代器数目(从0开始) 
+                forloop.revcounter 当前的反向迭代器数目(从1开始) 
+                forloop.revcounter0 当前的反向迭代器数目(从0开始) 
+                forloop.first 值为True，如果是第一次通过迭代器 
+                forloop.last 值为True，如果是最后一次通过迭代器 
+                forloop.parentloop 对于嵌套循环，这是当前循环的上一层循环
+          for … empty
+                {% for varibale in list %}
+                (内容1)
+                {% empty %}
+                (内容2)
+                {% endfor %}
+                意义：当list是空的时候，能够执行内容2，其形式等同于，先if判断list是否存在，然后在根据情况做什么操作。
+          （3）block   限定块标签 ，定义可以被子模板覆盖的块。
+          （4）comment 注释标签
+          （5）csrf_token 该标签用于 CSRF 保护 。跨站点请求伪造。
+
+     模板中的逻辑操作
+           ==, !=, >=, <=, >, < 这些比较都可以在模板中使用,and, or, not, in, not in 也可以在模板中使用.，但不允许在同一个标签中同时使用 and 和 or ，因为逻辑上可能模糊的。
+            {% if var >= 90 %}
+            成绩优秀，自强学堂你没少去吧！学得不错
+            {% elif var >= 80 %}
+            成绩良好
+            {% else %}
+            不及格啊，大哥！多去自强学堂学习啊！
+            {% endif %}
+
+
+Django数据模型下：基本数据访问
+    '''数据总结
+        数据表 - > 一个类
+        表中一行数据 -> 一个对象
+        表中一个字段 - > 一个类/对象的属性
+        表中几行数据 - >对象列表
+    '''
+    table.objects.all() # 获得table中所有对象
+    插入数据：
+        #01方法 e1 = Event(id=3,name='插入发布会',limit=15,status=True,address='湖南',strat_time=datatime(2019,6,15,14,0,0))   e1.save()  #from datetime import datetime
+        #02方法 Event.objects.create(id=4,name='vivo发布会',limit=15,status=True,address='湖南',strat_time=datatime(2019,6,15,19,0,0))
+        #03方法 Event.objects.get_or_create(id=3,name='插入发布会',limit=15,status=True,address='湖南',strat_time=datatime(2019,6,15,14,0,0)) # 首先尝试获取，不存在就创建，可以防止重复 返回值(object, True/False)，创建时返回 True, 已经存在时返回 False
+    查询数据：
+         # table.objects.all() 方法用于从数据库表中取得全部的结果，返回列表，
+            event_list = Event.objects.all()
+            event_list = Event.objects.all()[:10] 取前十条 不支持负索引
+         # table.objects.get() 方法用于从数据库表中取得一条匹配的结果，返回一个对象，如果记录不存在的话或结果大于1条，那么它会报 DoesNotExist 类型错误。
+            e2 = Event.objects.get(name='vivo发布会') # name作为查询条件  e2.status # 获取字段值
+         # table.objects.filter()方法是从数据库的取得匹配的结果，返回一个对象列表，如果记录不存在的话，它会返回[]。
+            e2 = Event.objects.filter(name__contains='发布会')   # 在 name 和 contains 之间用双下划线。这里contains 部分会被Django翻译成 LIKE 语句。
+    删除数据:
+        # 查询到某数据，通过 delete()方法删除。
+            Event.objects.get(name='插入发布会').delete()
+    更新数据：
+        # 查询到某数据，修改某字段值。通过save(）方法更新
+            # 单个更新 e1 = Event.objects.get(name='小米1发布会') e1.status =False e1.save()
+            # 批量更新 Person.objects.filter(name__contains="abc").update(name='xxx') # 名称中包含 "abc"的人 都改成 xxx
+
+    Entry.objects.count()来查询数量
+
+    查询结果排序：
+        Author.objects.all().order_by('name')
+        Author.objects.all().order_by('-name') # 在 column name 前加一个负号，可以实现倒序
+
+    结果数据重复：
+        qs1 = Pathway.objects.filter(label__name='x')
+        qs2 = Pathway.objects.filter(reaction__name='A + B >> C')
+        qs3 = Pathway.objects.filter(inputer__name='WeizhongTu')
+        # 合并到一起，这个时候就有可能出现重复的
+        qs = qs1 | qs2 | qs3
+        # 去重方法
+        qs = qs.distinct()
+     高级用法：
+        values_list 获取元组形式结果
+        values 获取字典形式的结果
+         extra 实现 别名，条件，排序等
+         annotate 聚合 计数，求和，平均数等
+         等等
+
+Django后台（admin）
+
+Django 的 表单 (forms)
+# 引入我们创建的表单类
+from .forms import AddForm
+def index(request):
+    if request.method == 'POST':# 当提交表单时
+        form = AddForm(request.POST) # form 包含提交的数据
+        if form.is_valid():# 如果提交的数据合法
+            a = form.cleaned_data['a']
+            b = form.cleaned_data['b']
+            return HttpResponse(str(int(a) + int(b)))
+    else:# 当正常访问时
+        form = AddForm()
+    return render(request, 'index.html', {'form': form})
+
+Django 分页器
+    # 假设Guest表有三个对象
+    from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+    guest_list = Guest.objects.all()  # Guest下所有对象
+    p = Paginator(guest_list,2)# 创建每页 2 条数据的分页器
+    p.count # 查看一共多少条数据 3条
+    p.page_range    # 查看共分多少页 range（1,2）
+    ###### 第一页
+    page1 = p.page(1)   # 获取第一页数据
+    page1 #当前第几页
+    page1.object_list # 当前页的对象
+    page1.paginator.num_pages   # 总页数
+    page1.number  # 当前页数
+    for i in page1:
+        i.realname # 循环打印第 1 页嘉宾的 realname
+    ### 第二页
+    page2 = p.page(2)
+    page2.start_index()  # 本页的第一条数据
+    page2.end_index()  # 本页的最后一条数据
+    page2.has_previous()  # 是否有上一页
+    page2.has_next()  # 是否有下一页
+    page2.previous_page_number()  # 上一页是第几页
+    page2.next_page_number()  # 下一页是第几页
+    page2.has_other_pages()  # 是否有其它页
+    page2.previous_page_number()  # 前一页是第几页
+    page2.paginator.num_pages # 最后一页
+
+
+tip:
+    修改models中数据后，应执行python manage.py makemigrations     python manage.py migrate
+    urls.py中的name参数作用：reverse 接收url中的name作为第一个参数，我们在代码中就可以通过reverse()来获取对应的网址（这个网址可以用来跳转，也可以用来计算相关页面的地址），只要对应的 url 的name
+    不改，就不用改代码中的网址。
